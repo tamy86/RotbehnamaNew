@@ -1,0 +1,21 @@
+* {
+    box-sizing: border-box;
+}
+
+
+.script-bf-box {
+    width: 270px;
+    height: 200px;
+    background: white;
+    margin: 10px;
+    will-change: transform;
+
+
+}
+
+.script-bf-box:hover {
+    background: #85C1E9;
+}
+
+
+
