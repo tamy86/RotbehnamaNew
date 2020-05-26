@@ -24,9 +24,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //
 //Route::get('business/login','HomeController@businessLogin')->name('userBussines');
 
-Route::post('{user}/login','login\LoginController@kindOfUser')->middleware('role');
+Route::post('user/login','login\LoginController@kindOfUser')->middleware('role');
 
-Route::post('{business}/login','login\LoginController@kindOfUser')->middleware('role');
+Route::post('business/login','login\LoginController@kindOfUser')->middleware('role');
 
 Route::post('user/login/phone','login\LoginController@validateUserPhone')->middleware('phone');
 
