@@ -21,11 +21,9 @@ class CheckPhone extends Middleware
             return response()->json(['message' => 'لطفا شماره همراه خود را به درستی وارد نمایید', 'isSuccess' => false, 'statusCode' => 400]);
 
         }
-
         else
         {
         return $next($request);
-
         }
     }
 }
