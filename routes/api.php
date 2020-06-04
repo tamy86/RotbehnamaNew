@@ -28,10 +28,10 @@ Route::post('user/login','login\LoginController@kindOfUser')->middleware('role')
 
 Route::post('business/login','login\LoginController@kindOfUser')->middleware('role');
 
-Route::post('user/login/phone','login\LoginController@validateUserPhone')->middleware('phone');
+Route::post('user/login/phone','login\LoginUserController@validateUserPhone')->middleware('phone');
 
-Route::post('business/login/phone','login\LoginController@validateUserBusinessPhone')->middleware('phone');
+Route::post('business/login/phone','login\LoginBusinessController@validateUserBusinessPhone')->middleware('phone');
 
-Route::post('user/login/verify','login\LoginController@validateUserVerifycode')->middleware('code');
+Route::post('user/login/verify','login\LoginUserController@validateUserVerifycode')->middleware('code');
 
-Route::post('business/login/verify','login\LoginController@validateUserBussinessVerifycode')->middleware('code');
+Route::post('business/login/verify','login\LoginBusinessController@validateUserBussinessVerifycode')->middleware('code');
