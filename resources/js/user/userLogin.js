@@ -13,8 +13,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
 
-
-
 const theme = createMuiTheme({
     overrides: {
         MuiInputLabel: { // Name of the component ⚛️ / style sheet
@@ -89,7 +87,6 @@ export default function Userlogin() {
     const[disabledverify,setDisabledverify]=useState(false);
     const[phonevalue,setPhonevalue]=useState('');
     const[verifyvalue,setVerifyvalue]=useState('');
-
     const[errorSnackbar,setErrorSnackbar]=useState(false);
     const[successSnackbar,setSuccessSnackbar]=useState(false);
     const[snackbarMessage,setSnackbarMessage]=useState('');
@@ -115,7 +112,6 @@ export default function Userlogin() {
 
         }
         else {
-
             axios.post('/api/user/login/phone', {'phone': phonevalue}).then(
                 res => {
                     if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200)) {
@@ -130,6 +126,7 @@ export default function Userlogin() {
                         setErrorSnackbar(true);
                     }
                 })
+
 
 
         }
@@ -171,8 +168,6 @@ export default function Userlogin() {
     //     })
     //
     // }
-
-
 
 
     function validateVerify() {
@@ -326,8 +321,9 @@ export default function Userlogin() {
                                         id="enter"
                                         onClick={()=>{validateVerify();}}
                                         disabled={disabledlogin}
+
                                 >
-                                    وروود
+                                     وروود
                                 </Button>
                             </Grid>
 

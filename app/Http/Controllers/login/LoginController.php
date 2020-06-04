@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
-
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -55,6 +55,8 @@ class LoginController extends Controller
 
         $roletype = Role::select('role_name')->where('id', $roleid)->first()->role_name;
 
+
+
         if ($roletype != 'user') {
             return response()->json([
                 'statusCode' => 400,
@@ -87,17 +89,26 @@ class LoginController extends Controller
                 'statusCode' => 200,
             ]);
         } else if ($phoneexist == true) {
+            $updatedate=Loginphone::select('updated_at')->where('phone',$phone)->where('role_id', $roleid)->first()->updated_at;
+            $now=Carbon::now();
+            $differentMin=$updatedate->diffInMinutes($now);
 
+            if($differentMin > 3) {
 
-            Loginphone::where('phone', $request->input('phone'))->where('role_id', $roleid)->update(['verify' => $verifyCode]);
-
-
-            return response()->json([
-                'isSuccess' => true,
-                'message' => 'کد اعتبار سنجی مجددا به شماره همراه شما ارسال شد',
-                'statusCode' => 200,
-            ]);
-
+                Loginphone::where('phone', $request->input('phone'))->where('role_id', $roleid)->update(['verify' => $verifyCode]);
+                return response()->json([
+                    'isSuccess' => true,
+                    'message' => 'کد اعتبار سنجی مجددا به شماره همراه شما ارسال شد',
+                    'statusCode' => 200,
+                ]);
+            }
+            else{
+                return response()->json([
+                    'isSuccess' => false,
+                    'message' => 'شما جهت دریافت کد مجدد باید  بیشتر از 3 دقیقه صبر کنید',
+                    'statusCode' => 400,
+                ]);
+            }
         }
     }
 
@@ -156,6 +167,13 @@ class LoginController extends Controller
 
         } else if ($phoneexist == true) {
 
+
+            $updatedate=Loginphone::select('updated_at')->where('phone',$phone)->where('role_id', $roleid)->first()->updated_at;
+            $now=Carbon::now();
+            $differentMin=$updatedate->diffInMinutes($now);
+
+            if($differentMin > 3) {
+
             Loginphone::where('phone', $request->input('phone'))->where('role_id', $roleid)->update(['verify' => $verifyCode]);
 
 
@@ -164,8 +182,17 @@ class LoginController extends Controller
                 'message' => 'کد اعتبار سنجی مجددا به شماره همراه شما ارسال شد',
                 'statusCode' => 200,
             ]);
+                }
+            else{
+                return response()->json([
+                    'isSuccess' => false,
+                    'message' => 'شما جهت دریافت کد مجدد باید  بیشتر از 3 دقیقه صبر کنید',
+                    'statusCode' => 400,
+                ]);
+            }
 
         }
+
     }
 
 
