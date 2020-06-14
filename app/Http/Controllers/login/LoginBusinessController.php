@@ -95,8 +95,39 @@ class LoginBusinessController extends Controller
     }
 
 
-    public function validateUserBussinessVerifycode()
+    public function validateUserBussinessVerifycode(Request $request)
     {
+        /**middleware check validate verfiy code**/
+
+
+        $roleid = Session::get('roleid');
+        $verify= $request->input('verifycode');
+        $phone=$request->input('phone');
+
+
+        $verifyExist=Loginphone::Where('phone',$phone)->Where('verify',$verify)->Where('role_id',$roleid)->exists();
+
+
+        if ($verifyExist==true)
+        {
+            Loginphone::where('phone',$phone)->Where('verify',$verify)->where('role_id', $roleid)->update(['signin' => 1]);
+
+            return response()->json([
+                'isSuccess' => true,
+                'message' => 'کد اعتبار سنجی درست وارد شده است',
+                'statusCode' => 200,
+//            'url' => route('home')
+            ]);
+        }
+        else {
+            return response()->json([
+                'isSuccess' => false,
+                'message' => 'کد اعتبار سنجی صحیح وارد نشده است',
+                'statusCode' => 400,
+//            'url' => route('home')
+            ]);
+        }
+
 
     }
 

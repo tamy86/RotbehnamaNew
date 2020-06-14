@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware\login;
 
+use App\ModelLogin\Loginphone;
 use Closure;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
 
 class CheckUserRole
 {
@@ -25,9 +28,28 @@ class CheckUserRole
                 'isSuccess'=>false,
                 ]);
         }
-    else
-        {
-            return $next($request);
+//    else
+//        {
+//            $ip = $request->ip();
+//            $checkSginin=Loginphone::select('signin')->where('ipaddress',$ip)->first()->signin;
+//            if($checkSginin==1)
+//            {
+//
+////               return response()->json([
+////                   'ip'=>$ip,
+////                   'signin'=>$checkSginin,
+////                   'url'=>'user/home',
+////               ]);
+//
+////                return redirect()->route('homeuser');
+////              Route::get('user/home','HomeController@userHome');
+////                return view('user/home');
+//                return Redirect::route('homeuser');
+//
+//            }
+            else {
+                return $next($request);
+            }
         }
-    }
+
 }

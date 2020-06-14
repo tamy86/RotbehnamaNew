@@ -91,6 +91,7 @@ export default function Userlogin() {
     const[successSnackbar,setSuccessSnackbar]=useState(false);
     const[snackbarMessage,setSnackbarMessage]=useState('');
 
+
     const classes = useStyles();
 
     // to show snackbar
@@ -114,14 +115,44 @@ export default function Userlogin() {
         else {
             axios.post('/api/user/login/phone', {'phone': phonevalue}).then(
                 res => {
-                    if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200)) {
+                    if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200) && (res.data['signin']===false))
+                    {
                         setSnackbarMessage(res.data['message']);
                         setSuccessSnackbar(true);
 
                         setDisabledverify(true);
                         setDisabledLogin(false);
                     }
-                    else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400)) {
+
+                    else if((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200) && (res.data['signin']===true))
+                    {
+                        const phone=res.data['phone'];
+
+                        axios.post('/api/user/home', {'phone': phone}).then(
+                            res=>{
+                            if (res.data['isSuccess']===true)
+                            {
+                                const validatePhone=res.data['phone'];
+                                // axios.get(`/api/user/home/${validatePhone}`).then(
+                                //     res=>{
+                                //         if (res.data['isSuccess']===true) {
+                                            window.location = `/api/user/home/${validatePhone}`;
+
+
+                                        // }
+                                    // });
+
+                            }
+
+
+                            });
+
+
+
+
+                    }
+                    else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400))
+                    {
                         setSnackbarMessage(res.data['message']);
                         setErrorSnackbar(true);
                     }
@@ -183,15 +214,24 @@ export default function Userlogin() {
 
             axios.post('/api/user/login/verify', {'verifycode': verifyvalue,'phone':phonevalue}).then(
                 res => {
-                    if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200)) {
-                        setSnackbarMessage(res.data['message']);
-                        setSuccessSnackbar(true);
-
+                    if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200) && (res.data['signin']===true)) {
                         setDisabledverify(true);
                         setDisabledLogin(false);
-                        window.location=res.data['url'];
+                        const phone=res.data['phone'];
+                        axios.post('/api/user/home',{'phone':phone}).then(res=> {
+                                if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200)) {
+                                    const phoneId= res.data['id']
+                                    window.location = `/api/user/home/${phoneId}`;
+                                }
+                                else {
+                                    window.location=`/api/user/login`;
+
+                                }
+                            }
+                        )
+
                     }
-                    else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400)) {
+                    else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400) &&(res.data['signin']===false)) {
                         setSnackbarMessage(res.data['message']);
                         setErrorSnackbar(true);
                     }
@@ -337,5 +377,5 @@ export default function Userlogin() {
 }
 
 if (document.getElementById('userlogin')) {
-    ReactDOM.render(<Userlogin />, document.getElementById('userlogin'));
+    ReactDOM.render(<Userlogin/>, document.getElementById('userlogin'));
 }

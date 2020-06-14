@@ -15,23 +15,30 @@ class LoginController extends Controller
     public function kindOfUser(Request $request)
     {
         $typeuser = $request->input('usertype');
+
         $roleid = Role::select('id')->where('role_name', $typeuser)->first()->id;
 
-        if ($roleid != null) {
-            Session::put('roleid', $roleid);
+        Session::put('roleid', $roleid);
 
-            return response()->json([
+        $ip = $request->ip();
+
+        if (($roleid != null)){
+
+
+        return response()->json([
                 'statusCode' => 200,
                 'isSuccess' => true,
-
             ]);
 
-        } else {
+
+        }else if(($roleid == null))
+        {
             return response()->json([
                 'message' => 'نوع کاربر انتخاب شده در سیستم وجود ندارد',
                 'statusCode' => 400,
                 'isSuccess' => false,
             ]);
         }
+
     }
 }

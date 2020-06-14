@@ -149,7 +149,21 @@ export default function Businesslogin() {
         }
         else{
 
-            alert("you are logined");
+            axios.post('/api/business/login/verify', {'verifycode': verifyvalue,'phone':phonevalue}).then(
+                res => {
+                    if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200)) {
+                        setSnackbarMessage(res.data['message']);
+                        setSuccessSnackbar(true);
+
+                        setDisabledverify(true);
+                        setDisabledLogin(false);
+                        // window.location=res.data['url'];
+                    }
+                    else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400)) {
+                        setSnackbarMessage(res.data['message']);
+                        setErrorSnackbar(true);
+                    }
+                })
 
         }
     }

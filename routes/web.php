@@ -23,6 +23,6 @@ Route::get('user/login','HomeController@userLogin')->name('userLogin');
 
 Route::get('business/login','HomeController@businessLogin')->name('userBussines');
 
-Route::get('user/home','HomeController@userHome');
+Route::get('user/home','HomeController@userHome')->middleware('usersignin');
 
 Route::get('user/subcategory','HomeController@userSubcategory');

@@ -21,9 +21,9 @@
 <div>
 
 
-    <div id="headeruser">
+    {{--<div id="headeruser">--}}
 
-    </div>
+    {{--</div>--}}
 
 
 
@@ -34,7 +34,7 @@
 
 
 
-    <div id="logoutbutton"></div>
+    {{--<div id="logoutbutton"></div>--}}
 
 
 

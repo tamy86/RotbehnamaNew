@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect,useRef} from 'react';
 import clsx from 'clsx';
 import ReactDOM from 'react-dom';
 import {createMuiTheme, makeStyles, useTheme} from '@material-ui/core/styles';
@@ -57,35 +57,55 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function Headeruser() {
+
+
+
+
+
+
+export default function Headeruser(props) {
+
+
     const classes = useStyles();
     const theme = useTheme();
+    const telphone=props.phone;
+
+        return(
+
+            <div className={classes.root}>
+                <CssBaseline/>
+                <AppBar
+                    style={{height: '65px', backgroundColor: '#00BFFF'}}
+                    position="fixed"
+                    className={clsx(classes.appBar)}
+                >
+                    <Toolbar>
+                        <Typography className={classes.title} variant="h6" color="inherit"
+                                    style={{fontFamily: 'Tahoma'}}>
+                            {/*<Button href='/business/login' className={classes.loginproprties} type={"button"} variant="outline">وروود کسب و کار</Button>*/}
+                            {/*<Button href='/user/login' className={classes.loginproprties} type={"button"} variant="outline">وروود کاربر</Button>*/}
+                        </Typography>
+                        <AccountCircle style={{fontSize: 50}}/>
+                        {telphone}
+
+                    </Toolbar>
 
 
-    return (
-        <div className={classes.root}>
-            <CssBaseline />
-            <AppBar
-                style={{height:'65px',backgroundColor:'#00BFFF'}}
-                position="fixed"
-                className={clsx(classes.appBar)}
-            >
-                <Toolbar>
-                    <Typography className={classes.title} variant="h6" color="inherit"  style={{fontFamily:'Tahoma'}}>
-                        {/*<Button href='/business/login' className={classes.loginproprties} type={"button"} variant="outline">وروود کسب و کار</Button>*/}
-                        {/*<Button href='/user/login' className={classes.loginproprties} type={"button"} variant="outline">وروود کاربر</Button>*/}
-                    </Typography>
-                    <AccountCircle style={{ fontSize: 50 }}/>
-                </Toolbar>
+                </AppBar>
+
+            </div>
+
+        );
 
 
-            </AppBar>
 
-        </div>
-    );
+
 }
 
+
 if (document.getElementById('headeruser')) {
-    ReactDOM.render(<Headeruser/>, document.getElementById('headeruser'));
+const phone=$("#headeruser").data("phone");
+
+ReactDOM.render(<Headeruser phone={phone}/>,document.getElementById('headeruser'));
 
 }

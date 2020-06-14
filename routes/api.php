@@ -28,10 +28,17 @@ Route::post('user/login','login\LoginController@kindOfUser')->middleware('role')
 
 Route::post('business/login','login\LoginController@kindOfUser')->middleware('role');
 
-Route::post('user/login/phone','login\LoginUserController@validateUserPhone')->middleware('phone');
+Route::post('user/login/phone','login\LoginUserController@validateUserPhone')->middleware('phone','usersignin');
 
 Route::post('business/login/phone','login\LoginBusinessController@validateUserBusinessPhone')->middleware('phone');
 
 Route::post('user/login/verify','login\LoginUserController@validateUserVerifycode')->middleware('code');
 
 Route::post('business/login/verify','login\LoginBusinessController@validateUserBussinessVerifycode')->middleware('code');
+
+Route::post('user/home','User\HomeUserController@homeUser')->middleware('phone');
+
+Route::get('user/home/{id}','User\HomeUserController@showHomeUser');
+
+
+//Route::get('user/home/logined','User\HomeUserController@showHomeUser');

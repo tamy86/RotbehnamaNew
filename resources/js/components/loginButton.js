@@ -74,12 +74,27 @@ export default function LoginButton() {
                     window.location=`/${kinduser}/login`;
 
                 }
-                else if ((res.data['isSuccess'] === false)&&(res.data['statusCode']===400))
+                // else if ((res.data['isSuccess'] === true)&&(res.data['statusCode']===200)&&(res.data['signin']===true))
+                // {
+                //     const phone=res.data['phone'];
+                //     axios.post('/api/user/home',{'phone':phone,}).then(
+                //         res=>{
+                //             if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200)) {
+                //                 window.location=`/user/home`;
+                //             }
+                //             else {
+                //                 window.location=`/${kinduser}/login`;
+                //
+                //             }
+                //         }
+                //     )
+                //
+                //
+                // }
+                else if((res.data['isSuccess'] === false)&&(res.data['statusCode']===400))
                 {
                     setSnackbarMessage(res.data['message']);
                     setErrorSnackbar(true);
-
-
                 }
             })
 

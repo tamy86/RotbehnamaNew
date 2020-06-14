@@ -16,7 +16,7 @@ class CheckPhone extends Middleware
      */
     public function handle($request, Closure $next)
     {
-        if (!(preg_match("/(0|\+98)?([ ]|,|-|[()]){0,2}9[1|2|3|4]([ ]|,|-|[()]){0,2}(?:[0-9]([ ]|,|-|[()]){0,2}){8}/",$request->input('phone'))))
+        if ((!(preg_match("/(0|\+98)?([ ]|,|-|[()]){0,2}9[1|2|3|4]([ ]|,|-|[()]){0,2}(?:[0-9]([ ]|,|-|[()]){0,2}){8}/",$request->input('phone')))))
         {
             return response()->json(['message' => 'لطفا شماره همراه خود را به درستی وارد نمایید', 'isSuccess' => false, 'statusCode' => 400]);
 
