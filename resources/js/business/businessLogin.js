@@ -117,17 +117,43 @@ export default function Businesslogin() {
 
             axios.post('/api/business/login/phone', {'phone': phonevalue}).then(
                 res => {
-                    if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200)) {
+                    if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200) && (res.data['signin']===false)) {
                         setSnackbarMessage(res.data['message']);
                         setSuccessSnackbar(true);
 
                         setDisabledverify(true);
                         setDisabledLogin(false);
                     }
-                    else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400)) {
+                    else if((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200) && (res.data['signin']===true))
+                    {
+                        const phone=res.data['phone'];
+
+                        axios.post('/api/user/home', {'phone': phone}).then(
+                            res=>{
+                                if ((res.data['isSuccess']===true)&& (res.data['statusCode'] === 200))
+                                {
+                                    const phoneId= res.data['id'];
+
+                                    window.location = `/api/business/home/${phoneId}`;
+
+                                }
+                                else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400))
+                                {
+                                    setSnackbarMessage(res.data['message']);
+                                    setErrorSnackbar(true);
+                                }
+
+
+                            });
+
+
+                    }
+                    else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400))
+                    {
                         setSnackbarMessage(res.data['message']);
                         setErrorSnackbar(true);
                     }
+
                 })
 
 
@@ -151,15 +177,26 @@ export default function Businesslogin() {
 
             axios.post('/api/business/login/verify', {'verifycode': verifyvalue,'phone':phonevalue}).then(
                 res => {
-                    if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200)) {
+                    if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200)&& (res.data['signin']===true)) {
                         setSnackbarMessage(res.data['message']);
                         setSuccessSnackbar(true);
 
                         setDisabledverify(true);
                         setDisabledLogin(false);
-                        // window.location=res.data['url'];
+                        const phone=res.data['phone'];
+                        axios.post('/api/user/home',{'phone':phone}).then(res=> {
+                            if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200)) {
+                                const phoneId= res.data['id'];
+                                window.location = `/api/business/home/${phoneId}`;
+                            }
+                            else {
+                                window.location=`/business/login`;
+
+                            }
+                        }
+                        )
                     }
-                    else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400)) {
+                    else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400)&&(res.data['signin']===false)) {
                         setSnackbarMessage(res.data['message']);
                         setErrorSnackbar(true);
                     }

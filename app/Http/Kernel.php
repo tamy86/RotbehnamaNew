@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'phone' => \App\Http\Middleware\login\CheckPhone::class,
         'role' =>\App\Http\Middleware\login\CheckUserRole::class,
         'usersignin'=>\App\Http\Middleware\user\CheckUserSignin::class,
+        'businesshome'=>\App\Http\Middleware\business\CheckBusinessHome::class,
     ];
 }

@@ -62,35 +62,49 @@ class LoginBusinessController extends Controller
                 'isSuccess' => true,
                 'message' => '  کد اعتبار سنجی به شماره همراه شما ارسال شد',
                 'statusCode' => 200,
+                'signin'=>false,
             ]);
 
         } else if ($phoneexist == true) {
 
+            $signin = Loginphone::where('phone', $phone)->where('signin', 0)->where('role_id', $roleid)->exists();
 
-            $updatedate=Loginphone::select('updated_at')->where('phone',$phone)->where('role_id', $roleid)->first()->updated_at;
-            $now=Carbon::now();
-            $differentMin=$updatedate->diffInMinutes($now);
+          if ($signin == true) {
 
-            if($differentMin > 3) {
+                $updatedate = Loginphone::select('updated_at')->where('phone', $phone)->where('role_id', $roleid)->first()->updated_at;
+                $now = Carbon::now();
+                $differentMin = $updatedate->diffInMinutes($now);
 
-                Loginphone::where('phone', $request->input('phone'))->where('role_id', $roleid)->update(['verify' => $verifyCode]);
+                if ($differentMin > 3) {
+
+                    Loginphone::where('phone', $phone)->where('role_id', $roleid)->update(['verify' => $verifyCode]);
 
 
-                return response()->json([
-                    'isSuccess' => true,
-                    'message' => 'کد اعتبار سنجی مجددا به شماره همراه شما ارسال شد',
-                    'statusCode' => 200,
-                ]);
-            }
-            else{
-                return response()->json([
-                    'isSuccess' => false,
-                    'message' => 'شما جهت دریافت کد مجدد باید  بیشتر از 3 دقیقه صبر کنید',
-                    'statusCode' => 400,
-                ]);
-            }
+                    return response()->json([
+                        'isSuccess' => true,
+                        'message' => 'کد اعتبار سنجی مجددا به شماره همراه شما ارسال شد',
+                        'statusCode' => 200,
+                        'signin' => false,
+                    ]);
+                } else {
+                    return response()->json([
+                        'isSuccess' => false,
+                        'message' => 'شما جهت دریافت کد مجدد باید  بیشتر از 3 دقیقه صبر کنید',
+                        'statusCode' => 400,
+                    ]);
+                }
 
+          }
+          else {
+              return response()->json([
+                  'isSuccess' => true,
+                  'signin'=>true,
+                  'statusCode' => 200,
+                  'phone'=>$phone,
+              ]);
+          }
         }
+
 
     }
 
@@ -114,9 +128,10 @@ class LoginBusinessController extends Controller
 
             return response()->json([
                 'isSuccess' => true,
-                'message' => 'کد اعتبار سنجی درست وارد شده است',
                 'statusCode' => 200,
-//            'url' => route('home')
+                'signin'=>$verifyExist,
+                'phone'=>$phone,
+
             ]);
         }
         else {
@@ -124,7 +139,7 @@ class LoginBusinessController extends Controller
                 'isSuccess' => false,
                 'message' => 'کد اعتبار سنجی صحیح وارد نشده است',
                 'statusCode' => 400,
-//            'url' => route('home')
+                'signin'=>$verifyExist,
             ]);
         }
 

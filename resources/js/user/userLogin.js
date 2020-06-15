@@ -130,25 +130,27 @@ export default function Userlogin() {
 
                         axios.post('/api/user/home', {'phone': phone}).then(
                             res=>{
-                            if (res.data['isSuccess']===true)
+                            if ((res.data['isSuccess']===true)&& (res.data['statusCode'] === 200))
                             {
-                                const validatePhone=res.data['phone'];
+                                const phoneId= res.data['id'];
                                 // axios.get(`/api/user/home/${validatePhone}`).then(
                                 //     res=>{
                                 //         if (res.data['isSuccess']===true) {
-                                            window.location = `/api/user/home/${validatePhone}`;
+                                            window.location = `/api/user/home/${phoneId}`;
 
 
                                         // }
                                     // });
 
                             }
+                            else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400))
+                            {
+                                setSnackbarMessage(res.data['message']);
+                                setErrorSnackbar(true);
+                            }
 
 
                             });
-
-
-
 
                     }
                     else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400))
@@ -156,6 +158,7 @@ export default function Userlogin() {
                         setSnackbarMessage(res.data['message']);
                         setErrorSnackbar(true);
                     }
+
                 })
 
 
@@ -214,17 +217,18 @@ export default function Userlogin() {
 
             axios.post('/api/user/login/verify', {'verifycode': verifyvalue,'phone':phonevalue}).then(
                 res => {
-                    if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200) && (res.data['signin']===true)) {
+                    if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200) && (res.data['signin']===true))
+                    {
                         setDisabledverify(true);
                         setDisabledLogin(false);
                         const phone=res.data['phone'];
                         axios.post('/api/user/home',{'phone':phone}).then(res=> {
                                 if ((res.data['isSuccess'] === true) && (res.data['statusCode'] === 200)) {
-                                    const phoneId= res.data['id']
+                                    const phoneId= res.data['id'];
                                     window.location = `/api/user/home/${phoneId}`;
                                 }
                                 else {
-                                    window.location=`/api/user/login`;
+                                    window.location=`/user/login`;
 
                                 }
                             }

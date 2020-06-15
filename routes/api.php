@@ -40,5 +40,7 @@ Route::post('user/home','User\HomeUserController@homeUser')->middleware('phone')
 
 Route::get('user/home/{id}','User\HomeUserController@showHomeUser');
 
+Route::get('business/home/{id}','business\HomeBusinessController@showHomeBusiness')->middleware('businesshome');
+
 
 //Route::get('user/home/logined','User\HomeUserController@showHomeUser');

@@ -19,5 +19,6 @@ require('./components/LogoutButton');
 require('./user/userLogin');
 require('./business/businessLogin');
 require('./components/headerUser');
+require('./components/headerBusiness');
 require('./user/subcategory');
 require('./user/home');

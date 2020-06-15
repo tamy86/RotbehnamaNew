@@ -65,18 +65,22 @@ class LoginUserController extends Controller
             ]);
         } else if ($phoneexist == true) {
 
+            $signin = Loginphone::where('phone', $phone)->where('signin', 0)->where('role_id',$roleid)->exists();
+
+      if ($signin == true) {
+
                 $updatedate = Loginphone::select('updated_at')->where('phone', $phone)->where('role_id', $roleid)->first()->updated_at;
                 $now = Carbon::now();
                 $differentMin = $updatedate->diffInMinutes($now);
 
                 if ($differentMin > 3) {
 
-                    Loginphone::where('phone', $request->input('phone'))->where('role_id', $roleid)->update(['verify' => $verifyCode]);
+                    Loginphone::where('phone', $phone)->where('role_id', $roleid)->update(['verify' => $verifyCode]);
                     return response()->json([
                         'isSuccess' => true,
                         'message' => 'کد اعتبار سنجی مجددا به شماره همراه شما ارسال شد',
                         'statusCode' => 200,
-                        'signin'=>false,
+                        'signin' => false,
                     ]);
                 } else {
                     return response()->json([
@@ -86,7 +90,15 @@ class LoginUserController extends Controller
                     ]);
                 }
             }
-
+       }
+       else{
+           return response()->json([
+               'isSuccess' => true,
+               'signin'=>true,
+               'statusCode' => 200,
+               'phone'=>$phone,
+           ]);
+       }
     }
 
 

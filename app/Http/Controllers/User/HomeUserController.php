@@ -37,6 +37,7 @@ if ($signinStatus==true) {
 else{
     return response()->json([
         'isSuccess' => false,
+        'message'=>'شما با دستگاه دیگر در حال حاضر لاگین هستید',
         'statusCode' => 400,
 
     ]);
@@ -68,6 +69,7 @@ else{
 
 
     }
+
 
 
 }
