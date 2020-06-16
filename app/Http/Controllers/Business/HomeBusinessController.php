@@ -20,20 +20,23 @@ class HomeBusinessController extends Controller
 
         $signinip = Loginphone::where('phone', $phone)->Where('signin', 1)->where('ipaddress',$ip)->where('role_id',$roleidSession)->exists();
 
-        if(($signinip==true)and($roleid==$roleidSession)) {
+        if(($signinip==true)) {
             return view('business.home', compact('phone'));
-//            return response()->json(['rolesession'=>$roleidSession,]);
+
         }else  if($signinip==false)
         {
             return view('auth.businessLogin');
         }
         else if($roleid!=$roleidSession)
         {
-            return response()->json([
-                'isSuccess' => false,
-                'statusCode' => 400,
-                'message'=>'لاگین نیستی',
-            ]);
+//            return response()->json([
+//                'isSuccess' => false,
+//                'statusCode' => 400,
+//                'message'=>'شما اجازه دسترسی با این نقش را ندارید ',
+//            ]);
+
+
+            return redirect()->route('userLogin');
         }
 
 

@@ -62,17 +62,22 @@ else{
 
             if (($signinip == true) and ($roleid == $roleidSession)) {
          return view('user.home', compact('phone'));
-//                return response()->json(['rolesession' => $roleidSession,]);
+
             } else if ($signinip == false) {
 //
 
                 return view('auth.userLogin');
-            } else if ($roleid != $roleidSession) {
-                return response()->json([
-                    'isSuccess' => false,
-                    'statusCode' => 400,
-                    'message' => 'لاگین نیستی',
-                ]);
+            }
+            else if ($roleid != $roleidSession) {
+//                return response()->json([
+//                    'isSuccess' => false,
+//                    'statusCode' => 400,
+//                    'message' => 'شما اجازه دسترسی با این نقش را ندارید',
+//                ]);
+
+                return redirect()->route('userBussines');
+
+
             }
 
 
