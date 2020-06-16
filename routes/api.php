@@ -38,9 +38,9 @@ Route::post('business/login/verify','login\LoginBusinessController@validateUserB
 
 Route::post('user/home','User\HomeUserController@homeUser')->middleware('phone');
 
-Route::get('user/home/{id}','User\HomeUserController@showHomeUser');
+Route::get('user/home/{id}','User\HomeUserController@showHomeUser')->middleware('userurl');
 
-Route::get('business/home/{id}','business\HomeBusinessController@showHomeBusiness')->middleware('businesshome');
+Route::get('business/home/{id}','business\HomeBusinessController@showHomeBusiness')->middleware('businesshome','businessurl');
 
 
 //Route::get('user/home/logined','User\HomeUserController@showHomeUser');

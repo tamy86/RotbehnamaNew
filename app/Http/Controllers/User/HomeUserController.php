@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\ModelLogin\Role;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -45,30 +46,37 @@ else{
 
     }
 
-    public function showHomeUser($id){
+    public function showHomeUser($id)
+    {
 
-        $roleid = Session::get('roleid');
-        $ip=$_SERVER['REMOTE_ADDR'];
+        $roleidSession = Session::get('roleid');
+        $ip = $_SERVER['REMOTE_ADDR'];
 
-        $phone=Loginphone::select('phone')->where('id',$id)->first()->phone;
+        $phone = Loginphone::select('phone')->where('id', $id)->first()->phone;
+        $roleid = Loginphone::select('role_id')->where('id', $id)->first()->role_id;
 
-     $signinip = Loginphone::where('phone', $phone)->Where('signin', 1)->where('ipaddress',$ip)->where('role_id',$roleid)->exists();
 
-     if($signinip==true) {
+
+
+            $signinip = Loginphone::where('phone', $phone)->Where('signin', 1)->where('ipaddress', $ip)->where('role_id', $roleidSession)->exists();
+
+            if (($signinip == true) and ($roleid == $roleidSession)) {
          return view('user.home', compact('phone'));
-     }else
-     {
-//         return response()->json([
-//         'isSuccess' => false,
-//         'statusCode' => 400,
-//         'message'=>'لاگین نیستی',
-//      ]);
+//                return response()->json(['rolesession' => $roleidSession,]);
+            } else if ($signinip == false) {
+//
 
-         return view('auth.userLogin');
-     }
+                return view('auth.userLogin');
+            } else if ($roleid != $roleidSession) {
+                return response()->json([
+                    'isSuccess' => false,
+                    'statusCode' => 400,
+                    'message' => 'لاگین نیستی',
+                ]);
+            }
 
 
-    }
+        }
 
 
 
