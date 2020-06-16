@@ -22,3 +22,4 @@ require('./components/headerUser');
 require('./components/headerBusiness');
 require('./user/subcategory');
 require('./user/home');
+require('./business/home');

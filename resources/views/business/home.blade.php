@@ -15,7 +15,7 @@
 
 
 
-    <div id="userhome"></div>
+    <div id="businesshome"></div>
 
 
 
