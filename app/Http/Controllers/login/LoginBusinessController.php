@@ -28,9 +28,17 @@ class LoginBusinessController extends Controller
 
         $phone = $request->input('phone');
 
+        if($roleid==null){
+            return response()->json([
+                'statusCode' => 400,
+                'isSuccess' => false,
+                'message' => 'درخواست شما مطابق با استاندارد تعیین شده نمیباشد. جهت وروود به سیستم از دکمه های وروود در صفحه استفاده نمایید'
+            ]);
+        }
+else {
 
-        $roletype = Role::select('role_name')->where('id', $roleid)->first()->role_name;
-
+    $roletype = Role::select('role_name')->where('id', $roleid)->first()->role_name;
+}
         if ($roletype != 'business') {
             return response()->json([
                 'statusCode' => 400,

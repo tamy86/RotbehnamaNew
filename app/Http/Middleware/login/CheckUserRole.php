@@ -23,7 +23,7 @@ class CheckUserRole
         if(((preg_match("/[^A-Za-z ]+/",$userkind)))or($userkind===null))
         {
             return response()->json([
-                'message'=>'درخواست شما مطابق با استاندارد تعیین شده نمیباشد مجدد تلاش نمایید',
+                'message'=>'درخواست شما مطابق با استاندارد تعیین شده نمیباشد. جهت ورود به سیستم از دکمه های وروود در صفحه استفاده نمایید',
                 'statusCode'=>400,
                 'isSuccess'=>false,
                 ]);

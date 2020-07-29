@@ -27,8 +27,16 @@ class LoginUserController extends Controller
 
         $phone = $request->input('phone');
 
-        $roletype = Role::select('role_name')->where('id', $roleid)->first()->role_name;
-
+        if($roleid==null){
+            return response()->json([
+                'statusCode' => 400,
+                'isSuccess' => false,
+                'message' => 'درخواست شما مطابق با استاندارد تعیین شده نمیباشد. جهت وروود به سیستم از دکمه های وروود در صفحه استفاده نمایید'
+                ]);
+        }
+else {
+    $roletype = Role::select('role_name')->where('id', $roleid)->first()->role_name;
+}
 
 
         if ($roletype != 'user') {
@@ -131,7 +139,7 @@ class LoginUserController extends Controller
         else {
             return response()->json([
                 'isSuccess' => false,
-                'message' => 'کد اعتبار سنجی صحیح وارد نشده است',
+                'message' => 'کد اعتبار سنجی اشتباه است',
                 'statusCode' => 400,
                 'signin'=>$verifyExist,
             ]);

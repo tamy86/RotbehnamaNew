@@ -12,6 +12,8 @@ import VerifiedUser from '@material-ui/icons/VerifiedUser';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
+import SnackbarAlert from '../components/SnackbarAlert';
+import Example from '../components/Example';
 
 const theme = createMuiTheme({
     overrides: {
@@ -95,9 +97,9 @@ export default function Userlogin() {
     const classes = useStyles();
 
     // to show snackbar
-    function Alert(props) {
-        return <MuiAlert elevation={6} variant="filled" {...props} />;
-    }
+    // function Alert(props) {
+    //     return <MuiAlert elevation={6} variant="filled" {...props} />;
+    // }
 //show snackbar
 
 
@@ -155,6 +157,7 @@ export default function Userlogin() {
                     }
                     else if ((res.data['isSuccess'] === false) && (res.data['statusCode'] === 400))
                     {
+                        console.log("sd");
                         setSnackbarMessage(res.data['message']);
                         setErrorSnackbar(true);
                     }
@@ -248,45 +251,45 @@ export default function Userlogin() {
 
 
 //to close snackbar and autohide
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setErrorSnackbar(false);
-        setSuccessSnackbar(false);
-
-    };
+//     const handleClose = (event, reason) => {
+//         if (reason === 'clickaway') {
+//             return;
+//         }
+//
+//         setErrorSnackbar(false);
+//         setSuccessSnackbar(false);
+//
+//     };
 
 //close and auto hide snackbar
 
     return (
 
+
         <div className={classes.root} style={{height:'300px'}}>
 
             {/*errors*/}
 
+            {/*<Snackbar anchorOrigin={{vertical: 'top',horizontal: 'right',direction:'ltr'}}*/}
+                      {/*open={errorSnackbar} autoHideDuration={5000}*/}
+                      {/*onClose={handleClose} style={{paddingTop:60}}>*/}
 
-            <Snackbar anchorOrigin={{vertical: 'top',horizontal: 'right',direction:'ltr'}}
-                      open={errorSnackbar} autoHideDuration={5000}
-                      onClose={handleClose} style={{paddingTop:60}}>
+                {/*<Alert onClose={handleClose} severity="warning" style={{fontFamily:'Tahoma',direction:'rtl',fontSize:16}}>*/}
+                    {/*{snackbarMessage}*/}
 
-                <Alert onClose={handleClose} severity="warning" style={{fontFamily:'Tahoma',direction:'rtl',fontSize:16}}>
-                    {snackbarMessage}
+                {/*</Alert>*/}
 
-                </Alert>
+            {/*</Snackbar>*/}
 
-            </Snackbar>
+            {/*<Snackbar anchorOrigin={{vertical: 'top',horizontal: 'right',}}*/}
+                      {/*open={successSnackbar} autoHideDuration={5000}*/}
+                      {/*onClose={handleClose} style={{paddingTop:60}}>*/}
 
-            <Snackbar anchorOrigin={{vertical: 'top',horizontal: 'right',}}
-                      open={successSnackbar} autoHideDuration={5000}
-                      onClose={handleClose} style={{paddingTop:60}}>
+                {/*<Alert onClose={handleClose} severity="success" style={{fontFamily:'Tahoma',direction:'rtl',fontSize:16}}>*/}
+                    {/*{snackbarMessage}*/}
+                {/*</Alert>*/}
 
-                <Alert onClose={handleClose} severity="success" style={{fontFamily:'Tahoma',direction:'rtl',fontSize:16}}>
-                    {snackbarMessage}
-                </Alert>
-
-            </Snackbar>
+            {/*</Snackbar>*/}
 
             {/*end error snackbar*/}
 
@@ -294,7 +297,7 @@ export default function Userlogin() {
 
             <Paper className={classes.paper}>
                 <Grid container spacing={2} style={{marginRight:'125px'}}>
-
+                    <SnackbarAlert message={snackbarMessage} errorshow={errorSnackbar} sucessshow={successSnackbar}/>
                     <Grid item xs={12} sm container>
 
                         <Grid item xs container direction="column" spacing={2}>
@@ -317,7 +320,7 @@ export default function Userlogin() {
                                         name="phoneno"
                                         title="phoneno"
                                         value={phonevalue}
-                                        onChange={event=>setPhonevalue(event.target.value)}
+                                        onChange={event=>{setPhonevalue(event.target.value);setErrorSnackbar(false);setSuccessSnackbar(false);}}
 
                                         InputProps={{
                                             startAdornment: (
@@ -338,7 +341,7 @@ export default function Userlogin() {
                                         name="verifycode"
                                         title="verifycode"
                                         value={verifyvalue}
-                                        onChange={event=>setVerifyvalue(event.target.value)}
+                                        onChange={event=>{setVerifyvalue(event.target.value);setErrorSnackbar(false);setSuccessSnackbar(false);}}
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start">
@@ -354,6 +357,7 @@ export default function Userlogin() {
                                          variant="outlined" color="primary"
                                          type="submit"
                                          onClick={()=>{phonenoValidate();}}
+                                         onMouseUp={()=>{setErrorSnackbar()}} //for repeat erro msg
                                          disabled={disabledverify}
                                 >
                                     دریافت کد اعتبارسنجی
@@ -364,6 +368,7 @@ export default function Userlogin() {
                                         variant="outlined" color="primary"
                                         id="enter"
                                         onClick={()=>{validateVerify();}}
+                                        onMouseUp={()=>{setErrorSnackbar()}} //for repeat erro msg
                                         disabled={disabledlogin}
 
                                 >
